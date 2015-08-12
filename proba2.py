@@ -117,7 +117,7 @@ class DatosAgrupados(Data):
         return linf + ((N/2.0-Ni)/float(ni)) * a
 
     def moda(self):
-        max_val = self.__get_max()
+        max_val = self.get_repeated_indexes()
         linf = self.tabla['min'][max_val]
         ni_a = self.tabla['ni'][max_val-1]
         ni = self.tabla['ni'][max_val]
@@ -138,8 +138,13 @@ class DatosAgrupados(Data):
     def desviacion_estandar(self):
         return math.sqrt(self.varianza())
 
-    def __get_repeated_indexes(self, val):
-        pass
+    def get_repeated_indexes(self):
+        max_val = self.tabla['ni'][self.__get_max()]
+        max_vals = [i 
+            for i in range(len(self.tabla['ni'])) 
+            if self.tabla['ni'][i] == max_val]
+
+        return max_vals[0] if len(max_vals) == 1 else max_vals
 
     def __get_max(self):
         max_val = max(self.tabla['ni'])
